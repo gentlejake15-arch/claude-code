@@ -109,12 +109,12 @@ function footer(slide,n){
   });
 })();
 
-/* =============================================== SLIDES 2–4 — LOCATION PROFILES */
-function locationSlide(slNo, groupNo, subset){
+/* =============================================== SLIDE 2 — LOCATION PROFILES */
+function locationSlide(slNo, subset){
   const s = pptx.addSlide(); s.background={color:WHITE};
-  sunBadge(s,0.5,0.42,String(groupNo),0.6);
+  sunBadge(s,0.5,0.42,"2",0.6);
   s.addText("Store Trade-Area Profiles",{x:1.25,y:0.36,w:8,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:28});
-  s.addText(`Step 2 · Location profiles ${subset[0].idx}–${subset[subset.length-1].idx} of 15`,
+  s.addText("Step 2 · All 15 location profiles",
     {x:1.27,y:0.9,w:9,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
 
   const cols=[
@@ -122,38 +122,35 @@ function locationSlide(slNo, groupNo, subset){
     {t:"Median HHI",w:1.15,a:"center"},{t:"Traffic (VPD)",w:1.2,a:"center"},{t:"Parking /1k",w:1.0,a:"center"},
     {t:"Vis / Acc",w:0.95,a:"center"},{t:"Anchor Retailers",w:2.55,a:"left"},{t:"Competitor",w:1.65,a:"left"},
   ];
-  const header = cols.map(c=>({text:c.t,options:{bold:true,color:WHITE,fill:{color:INK},align:c.a,valign:"middle",fontSize:11,fontFace:BODY}}));
+  const header = cols.map(c=>({text:c.t,options:{bold:true,color:WHITE,fill:{color:INK},align:c.a,valign:"middle",fontSize:9.5,fontFace:BODY}}));
   const rows=[header];
   subset.forEach((it,i)=>{
     const d=S[it.name]; const tint = i%2? CLOUD2 : CLOUD;
     rows.push([
-      {text:it.name,options:{bold:true,color:INK,fill:{color:tint},align:"left",valign:"middle",fontSize:11}},
-      {text:(d.size/1000).toFixed(1)+"k",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
-      {text:d.pop,options:{fill:{color:tint},align:"center",valign:"middle",fontSize:9.5,color:GRAY}},
-      {text:d.inc?("$"+(d.inc/1000).toFixed(0)+"k"):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
-      {text:d.traffic?("~"+(d.traffic/1000).toFixed(0)+"k"):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
-      {text:d.park!=null?d.park.toFixed(2):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
-      {text:`${d.vis} / ${d.acc}`,options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,bold:true,color:INK2}},
-      {text:d.anchorTxt,options:{fill:{color:tint},align:"left",valign:"middle",fontSize:9.5,color:GRAY}},
-      {text:d.compTxt,options:{fill:{color:tint},align:"left",valign:"middle",fontSize:9.5,color:d.compTxt==="—"?GRAY:CORAL}},
+      {text:it.name,options:{bold:true,color:INK,fill:{color:tint},align:"left",valign:"middle",fontSize:8.5}},
+      {text:(d.size/1000).toFixed(1)+"k",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:8,color:GRAY}},
+      {text:d.pop,options:{fill:{color:tint},align:"center",valign:"middle",fontSize:7.5,color:GRAY}},
+      {text:d.inc?("$"+(d.inc/1000).toFixed(0)+"k"):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:8,color:GRAY}},
+      {text:d.traffic?("~"+(d.traffic/1000).toFixed(0)+"k"):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:8,color:GRAY}},
+      {text:d.park!=null?d.park.toFixed(2):"—",options:{fill:{color:tint},align:"center",valign:"middle",fontSize:8,color:GRAY}},
+      {text:`${d.vis} / ${d.acc}`,options:{fill:{color:tint},align:"center",valign:"middle",fontSize:8,bold:true,color:INK2}},
+      {text:d.anchorTxt,options:{fill:{color:tint},align:"left",valign:"middle",fontSize:7.5,color:GRAY}},
+      {text:d.compTxt,options:{fill:{color:tint},align:"left",valign:"middle",fontSize:7.5,color:d.compTxt==="—"?GRAY:CORAL}},
     ]);
   });
-  s.addTable(rows,{x:0.5,y:1.45,w:PW-1.0,colW:cols.map(c=>c.w),rowH:0.92,border:{type:"solid",color:WHITE,pt:1.5},valign:"middle"});
+  s.addTable(rows,{x:0.5,y:1.3,w:PW-1.0,colW:cols.map(c=>c.w),rowH:0.33,border:{type:"solid",color:WHITE,pt:1},valign:"middle"});
   s.addText("Population shown as 1-/3-/5-mile radius. “—” = data not yet captured in source workbook; to be field-verified.",
     {x:0.5,y:PH-0.72,w:11,h:0.3,fontFace:BODY,italic:true,fontSize:9.5,color:GRAY});
   footer(s,slNo);
 }
-const g1 = by25.slice(0,5).map((n,i)=>({name:n,idx:i+1}));   // top group by 2025 sales for logical grouping
 // Present in portfolio order (not ranked) so slide is a neutral profile list:
 const order = names;
-locationSlide(2,1, order.slice(0,5).map((n,i)=>({name:n,idx:i+1})));
-locationSlide(3,2, order.slice(5,10).map((n,i)=>({name:n,idx:i+6})));
-locationSlide(4,3, order.slice(10,15).map((n,i)=>({name:n,idx:i+11})));
+locationSlide(2, order.map(n=>({name:n})));
 
 /* ===================================================== SLIDE 5 — RANKINGS */
 (() => {
   const s = pptx.addSlide(); s.background={color:WHITE};
-  sunBadge(s,0.5,0.42,"5",0.6,CORAL,WHITE);
+  sunBadge(s,0.5,0.42,"3",0.6,CORAL,WHITE);
   s.addText("Store Rankings by Sales",{x:1.25,y:0.36,w:9,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:28});
   s.addText("Step 3 · All 15 stores ranked — full-year 2025 vs. 2026 year-to-date (Jan–Jun)",
     {x:1.27,y:0.9,w:11,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
@@ -176,13 +173,13 @@ locationSlide(4,3, order.slice(10,15).map((n,i)=>({name:n,idx:i+11})));
   s.addChart(pptx.ChartType.bar, mk(asc25.map(n=>n),asc25.map(n=>S[n].s25)), {...chartOpts(SUN)});
   s.addChart(pptx.ChartType.bar, mk(asc26.map(n=>n),asc26.map(n=>S[n].s26)), {...chartOpts(SKY), x:6.9, valAxisMaxVal:3000000});
 
-  footer(s,5);
+  footer(s,3);
 })();
 
 /* ============================================= SLIDE 6 — TOP vs BOTTOM TRAITS */
 (() => {
   const s = pptx.addSlide(); s.background={color:INK};
-  sunBadge(s,0.5,0.42,"6",0.6);
+  sunBadge(s,0.5,0.42,"4",0.6);
   s.addText("What Sets Top Stores Apart",{x:1.25,y:0.36,w:10,h:0.5,fontFace:HEAD,bold:true,color:WHITE,fontSize:28});
   s.addText("Step 3 · Shared characteristics of the highest- and lowest-performing locations",
     {x:1.27,y:0.9,w:11,h:0.35,fontFace:BODY,color:"CFC9E0",fontSize:13});
@@ -223,13 +220,13 @@ locationSlide(4,3, order.slice(10,15).map((n,i)=>({name:n,idx:i+11})));
 
   s.addText(`Avg. 2025 sales — Top 5: ${money(avg(top5,d=>d.s25))}   vs.   Bottom 5: ${money(avg(bot5,d=>d.s25))}  (a ${(avg(top5,d=>d.s25)/avg(bot5,d=>d.s25)).toFixed(1)}× gap)`,
     {x:0.5,y:5.95,w:12.3,h:0.5,align:"center",fontFace:BODY,bold:true,color:SUN,fontSize:14});
-  footer(s,6);
+  footer(s,4);
 })();
 
 /* ============================================= SLIDE 7 — DRIVERS PART 1 */
 (() => {
   const s = pptx.addSlide(); s.background={color:WHITE};
-  sunBadge(s,0.5,0.42,"7",0.6);
+  sunBadge(s,0.5,0.42,"5",0.6);
   s.addText("Do the Data Support Our Hypotheses?",{x:1.25,y:0.36,w:11,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:26});
   s.addText("Step 3 · Testing assumptions on income, traffic, and competition",
     {x:1.27,y:0.9,w:11,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
@@ -255,13 +252,13 @@ locationSlide(4,3, order.slice(10,15).map((n,i)=>({name:n,idx:i+11})));
     s.addText(r.d,{x:7.75,y:y+0.16,w:4.85,h:1.4,fontFace:BODY,color:GRAY,fontSize:11.5,valign:"middle",lineSpacingMultiple:1.02});
     y+=1.83;
   });
-  footer(s,7);
+  footer(s,5);
 })();
 
 /* ============================================= SLIDE 8 — DRIVERS PART 2 + WEIGHTS */
 (() => {
   const s = pptx.addSlide(); s.background={color:WHITE};
-  sunBadge(s,0.5,0.42,"8",0.6);
+  sunBadge(s,0.5,0.42,"6",0.6);
   s.addText("Anchors, Parking & the Predictive Weights",{x:1.25,y:0.36,w:11,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:25});
   s.addText("Step 3 · Remaining drivers, and the weights that build the scorecard",
     {x:1.27,y:0.9,w:11,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
@@ -294,7 +291,7 @@ locationSlide(4,3, order.slice(10,15).map((n,i)=>({name:n,idx:i+11})));
     valAxisHidden:true, valGridLine:{style:"none"}, catGridLine:{style:"none"},
     valAxisMaxVal:24, barGapWidthPct:45,
   });
-  footer(s,8);
+  footer(s,6);
 })();
 
 /* ===================================== SLIDES 9–10 — SCORECARD */
@@ -329,11 +326,11 @@ function scorecardSlide(slNo, badge, title, sub, subset, note){
   footer(s,slNo);
 }
 const ranked = byScore.map((o,i)=>({...o,rank:i+1}));
-scorecardSlide(9,"9","The Sunburn Scorecard  ·  Ranks 1–8",
+scorecardSlide(7,"7","The Sunburn Scorecard  ·  Ranks 1–8",
   "Step 4 · Every location scored 1–5 across 8 weighted categories → overall score of 100",
   ranked.slice(0,8),
   "Each category scored 1–5; the overall score applies the Step-3 weights (Traffic 20% · Access/Visibility/Parking/Anchors 15% each · Income 10% · Population/Competition 5%). Highest possible weighted score = 100.");
-scorecardSlide(10,"10","The Sunburn Scorecard  ·  Ranks 9–15",
+scorecardSlide(8,"8","The Sunburn Scorecard  ·  Ranks 9–15",
   "Step 4 · Lower-scoring existing stores — and how to read the model against actual sales",
   ranked.slice(8,15),
   "Note: the model rewards suburban physical attributes (parking, access, visibility). Proven urban sellers — Jax 5 Points, Jax Beach — score lower than they sell, so scores guide, not replace, judgment. Blank source cells were scored at a neutral 3 (income 4) pending field verification.");
