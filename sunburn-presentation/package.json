@@ -1,0 +1,15 @@
+{
+  "name": "sunburn-presentation-generator",
+  "version": "1.0.0",
+  "description": "Generates the Sunburn Site Selection PowerPoint deck",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": "true",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
