@@ -147,7 +147,7 @@ function locationSlide(slNo, subset){
 const order = names;
 locationSlide(2, order.map(n=>({name:n})));
 
-/* ===================================================== SLIDE 5 — RANKINGS */
+/* ===================================================== SLIDE 3 — RANKINGS */
 (() => {
   const s = pptx.addSlide(); s.background={color:WHITE};
   sunBadge(s,0.5,0.42,"3",0.6,CORAL,WHITE);
@@ -155,24 +155,37 @@ locationSlide(2, order.map(n=>({name:n})));
   s.addText("Step 3 · All 15 stores ranked — full-year 2025 vs. 2026 year-to-date (Jan–Jun)",
     {x:1.27,y:0.9,w:11,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
 
-  s.addText("2025 · Full Year",{x:0.6,y:1.4,w:5.8,h:0.35,fontFace:BODY,bold:true,color:SUN,fontSize:14});
-  s.addText("2026 · YTD (Jan–Jun)",{x:6.95,y:1.4,w:5.8,h:0.35,fontFace:BODY,bold:true,color:SKY,fontSize:14});
+  const rank25={}, rank26={};
+  by25.forEach((n,i)=>rank25[n]=i+1);
+  by26.forEach((n,i)=>rank26[n]=i+1);
 
-  // ascending so #1 sits at top of horizontal bar chart
-  const asc25=[...by25].reverse(), asc26=[...by26].reverse();
-  const mk=(labels,vals,color)=>[{name:"Sales",labels,values:vals}];
-  const chartOpts=(color)=>({
-    x:0.55, y:1.75, w:6.15, h:5.35, barDir:"bar",
-    chartColors:[color], showLegend:false, showTitle:false,
-    showValue:true, dataLabelPosition:"outEnd", dataLabelFontSize:8, dataLabelColor:INK,
-    dataLabelFormatCode:'"$"0.00,,"M"',
-    catAxisLabelColor:INK, catAxisLabelFontSize:8.5, catAxisLabelFontFace:BODY,
-    valAxisHidden:true, valGridLine:{style:"none"}, catGridLine:{style:"none"},
-    valAxisMaxVal:6500000, barGapWidthPct:35,
+  const cols=[
+    {t:"'25 Rank",w:1.0,a:"center"},
+    {t:"Store",w:3.5,a:"left"},
+    {t:"2025 Sales (Full Year)",w:2.65,a:"center"},
+    {t:"2026 Sales (YTD Jan–Jun)",w:2.65,a:"center"},
+    {t:"'26 Rank",w:1.0,a:"center"},
+    {t:"Rank Δ",w:1.533,a:"center"},
+  ];
+  const header = cols.map(c=>({text:c.t,options:{bold:true,color:WHITE,fill:{color:INK},align:c.a,valign:"middle",fontSize:11,fontFace:BODY}}));
+  const rows=[header];
+  by25.forEach((n,i)=>{
+    const d=S[n], tint = i%2? CLOUD2 : CLOUD;
+    const delta = rank25[n]-rank26[n]; // positive = moved up in 2026
+    const deltaTxt = delta>0? `▲${delta}` : delta<0? `▼${Math.abs(delta)}` : "–";
+    const deltaColor = delta>0? SUN : delta<0? CORAL : GRAY;
+    rows.push([
+      {text:String(rank25[n]),options:{fill:{color:tint},align:"center",valign:"middle",fontSize:12,bold:true,color:INK}},
+      {text:n,options:{fill:{color:tint},align:"left",valign:"middle",fontSize:11,bold:true,color:INK}},
+      {text:money(d.s25),options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
+      {text:money(d.s26),options:{fill:{color:tint},align:"center",valign:"middle",fontSize:10.5,color:GRAY}},
+      {text:String(rank26[n]),options:{fill:{color:tint},align:"center",valign:"middle",fontSize:11,color:INK2}},
+      {text:deltaTxt,options:{fill:{color:tint},align:"center",valign:"middle",fontSize:11,bold:true,color:deltaColor}},
+    ]);
   });
-  s.addChart(pptx.ChartType.bar, mk(asc25.map(n=>n),asc25.map(n=>S[n].s25)), {...chartOpts(SUN)});
-  s.addChart(pptx.ChartType.bar, mk(asc26.map(n=>n),asc26.map(n=>S[n].s26)), {...chartOpts(SKY), x:6.9, valAxisMaxVal:3000000});
-
+  s.addTable(rows,{x:0.5,y:1.45,w:PW-1.0,colW:cols.map(c=>c.w),rowH:0.35,border:{type:"solid",color:WHITE,pt:1.5},valign:"middle"});
+  s.addText("Ranked by full-year 2025 sales. Rank Δ compares 2025 full-year rank to 2026 YTD (Jan–Jun) rank — ▲ moved up, ▼ moved down.",
+    {x:0.5,y:PH-0.72,w:11,h:0.3,fontFace:BODY,italic:true,fontSize:9.5,color:GRAY});
   footer(s,3);
 })();
 
