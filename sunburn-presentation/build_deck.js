@@ -295,128 +295,129 @@ scorecardSlide(8,"8","The Sunburn Scorecard  ·  Ranks 9–15",
   ranked.slice(8,15),
   "The model rewards suburban site mechanics (traffic, parking, access). Proven urban/destination sellers — Jax 5 Points and Pensacola — score below their sales, so the scorecard guides rather than replaces judgment. Only Panama City Beach & Sarasota parking are estimated (neutral 3); all else uses actual workbook figures.");
 
-/* ============================================= SLIDES 9–11 — SUCCESS SPOTLIGHTS */
-// Qualitative "why" copy for the model's top-3 analogs, one line per criterion.
-// Numbers/labels are pulled live from S/sc; only the rationale text is curated.
-const SPOTLIGHT_WHY = {
-  "Fort Lauderdale": {
-    headline: "A clean sweep — 5 of 5 on every criterion. The benchmark every future site is measured against.",
-    traf:"One of the busiest corridors in the portfolio — as high as it gets on the scale.",
-    acc:"Easy, high-speed in/out from a major arterial with no bottlenecks.",
-    vis:"Prime frontage on a primary corridor — impossible to miss.",
-    park:"10 spaces / 1,000 SF — effectively zero parking friction.",
-    anchor:"Target + a movie theatre pull steady cross-shop traffic all week.",
-    inc:"$79k median HHI sits right in the $55k–$90k sweet spot.",
-    pop:"313.4k people within 5 miles — the largest trade area in the portfolio.",
-    comp:"No named competitor in the trade area — uncontested demand.",
+/* ============================================= SLIDES 9–12 — NEW-MARKET CANDIDATES */
+// Illustrative expansion candidates — markets Sunburn does not yet serve, scored
+// with the same rubric (sTraf/sPark/sPop/sInc/sComp + fixed anchor score) used
+// for the 15 existing stores. Figures are market-level estimates for planning
+// purposes, not confirmed site data — pending on-the-ground due diligence.
+const CANDIDATES = {
+  "Tampa — Westshore District": {
+    inc:82000, traf:48000, trafD:"~48k", pop5:260000, popD:"~65k / 190k / 260k (1/3/5-mi, est.)",
+    park:3.4, vis:5, acc:4, anchor:5, anchorTxt:"International Mall, Whole Foods, big-box corridor",
+    compTxt:"Green Wave Dispensary",
+    headline:"Tampa's densest retail corridor — top-tier traffic and anchors, offset only by tighter urban parking and one nearby competitor.",
+    why:{
+      traf:"~48,000 VPD on a primary Westshore corridor — among the highest of any candidate market.",
+      acc:"Solid arterial access, though rush-hour congestion keeps it just off a top score.",
+      vis:"Prime frontage directly on the retail corridor — hard to miss.",
+      park:"3.4 spaces / 1,000 SF is workable but the tightest of the four candidates — typical of dense urban infill.",
+      anchor:"Anchored by a major regional mall and grocery — a built-in draw with heavy cross-shop traffic.",
+      inc:"$82k median HHI sits comfortably in the $55k–$90k mainstream band.",
+      pop:"An estimated 260k people within 5 miles — the largest trade area of the four candidates.",
+      comp:"One named competitor in the corridor — consistent with the portfolio finding that proven corridors signal demand rather than cap it.",
+    },
   },
-  "Mandarin San Jose": {
-    headline: "A grocery-anchored center with near-flawless site mechanics — proof that a smaller, denser trade area can still be a top performer.",
-    traf:"~52,000 VPD — tied for the highest traffic count in the portfolio.",
-    acc:"Good ingress/egress, though slightly busier than Ft. Lauderdale's arterial.",
-    vis:"Excellent street-facing visibility inside a well-trafficked center.",
-    park:"10 spaces / 1,000 SF — as generous as it gets.",
-    anchor:"Grocery + mall anchor a true weekly-visit destination.",
-    inc:"$91k median HHI — just above the ideal band, still solidly mainstream.",
-    pop:"118.2k within 5 miles — smaller than the top site, but dense enough to convert.",
-    comp:"No named competitor — a clean run at the trade area.",
+  "Boca Raton — Town Center": {
+    inc:84000, traf:40000, trafD:"~40k", pop5:210000, popD:"~35k / 130k / 210k (1/3/5-mi, est.)",
+    park:4.2, vis:4, acc:4, anchor:5, anchorTxt:"Town Center Mall, Whole Foods, Trader Joe's",
+    compTxt:"Sunset Wellness",
+    headline:"An affluent South Florida infill market with mall-grade anchors and healthy parking — a strong complement to the existing Fort Lauderdale / West Palm Beach cluster.",
+    why:{
+      traf:"~40,000 VPD along the Town Center corridor — solidly above the portfolio's traffic threshold for a strong site.",
+      acc:"Easy in/out with multiple signalized access points into the center.",
+      vis:"Good street-facing visibility, shared with several national retailers.",
+      park:"4.2 spaces / 1,000 SF clears the portfolio's 4+ benchmark for a well-parked site.",
+      anchor:"A destination mall plus two grocery anchors — the strongest anchor mix of the four candidates.",
+      inc:"$84k median HHI — mainstream and affluent without tipping into the luxury band that underperformed elsewhere in the portfolio.",
+      pop:"An estimated 210k within 5 miles, fills the gap between the existing Fort Lauderdale and West Palm Beach stores.",
+      comp:"One named competitor nearby — a live, demand-proven corridor rather than untested ground.",
+    },
   },
-  "Orlando": {
-    headline: "The highest raw traffic count in the portfolio, powered by a captive student population — and proof that nearby competition doesn't cap upside.",
-    traf:"~70,000 VPD — the single highest traffic count of all 15 stores.",
-    acc:"Congested student-area access keeps this from a top access score.",
-    vis:"Strong visibility along a high-traffic UCF-adjacent corridor.",
-    park:"4.71 spaces / 1,000 SF — workable, not abundant.",
-    anchor:"UCF + student housing is a built-in, self-renewing demand engine.",
-    inc:"$74k median HHI — comfortably inside the mainstream band.",
-    pop:"260k within 5 miles — the second-largest trade area in the portfolio.",
-    comp:"Shares the corridor with a named competitor (Lifted Smoke) — proof a proven corridor beats an empty one.",
+  "Naples — Waterside Shops": {
+    inc:91000, traf:27000, trafD:"~27k", pop5:130000, popD:"~18k / 80k / 130k (1/3/5-mi, est.)",
+    park:4.6, vis:4, acc:4, anchor:5, anchorTxt:"Waterside Shops, Publix, upscale dining",
+    compTxt:"—",
+    headline:"An uncontested Gulf Coast market with a premium anchor center — the trade-off is lower daytime traffic and a smaller year-round trade area.",
+    why:{
+      traf:"~27,000 VPD is the lowest of the four candidates — a seasonal/tourist market rather than a commuter corridor.",
+      acc:"Easy, low-congestion access typical of a lower-density coastal market.",
+      vis:"Good visibility within a well-known upscale shopping destination.",
+      park:"4.6 spaces / 1,000 SF is the most generous of the four candidates.",
+      anchor:"Waterside Shops + Publix draw a steady, affluent shopper base.",
+      inc:"$91k median HHI is just above the portfolio's ideal $55k–$90k band — worth monitoring given Alton SoBe's high-income market underperformed.",
+      pop:"An estimated 130k within 5 miles — the smallest trade area of the four, partly offset by strong seasonal tourism.",
+      comp:"No named competitor identified — a clean, uncontested run at the market.",
+    },
+  },
+  "Gainesville — Midtown / UF": {
+    inc:51000, traf:32000, trafD:"~32k", pop5:150000, popD:"~28k / 95k / 150k (1/3/5-mi, est.)",
+    park:3.0, vis:4, acc:3, anchor:5, anchorTxt:"University of Florida, student housing, Midtown retail",
+    compTxt:"—",
+    headline:"A campus-driven demand engine much like Orlando's UCF site — strong anchor, modest income and access reflecting a college-town trade area.",
+    why:{
+      traf:"~32,000 VPD along the Midtown corridor — moderate, campus-driven volume.",
+      acc:"Campus-area congestion at peak times keeps access to a middle score, mirroring the Orlando UCF site.",
+      vis:"Good visibility along the retail strip adjacent to campus.",
+      park:"3.0 spaces / 1,000 SF is workable for a walkable, campus-adjacent site.",
+      anchor:"The University of Florida is a self-renewing demand engine — tens of thousands of students turn over every fall.",
+      inc:"$51k median HHI is the lowest of the four candidates, typical of a college-town trade area — but the portfolio's Jax 5 Points ($49k) shows lower income doesn't cap sales.",
+      pop:"An estimated 150k within 5 miles, concentrated around a dense, walkable campus core.",
+      comp:"No named competitor identified in the immediate trade area.",
+    },
   },
 };
-function spotlightSlide(slNo, badge, o){
-  const s=pptx.addSlide(); s.background={color:WHITE};
-  const d=S[o.n], why=SPOTLIGHT_WHY[o.n];
-  sunBadge(s,0.5,0.42,badge,0.6,SUN,INK);
-  s.addText(`Success Spotlight — ${o.n}`,{x:1.25,y:0.36,w:10.5,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:27});
-  s.addText("Step 6 · Why this location works, criterion by criterion — a model for future site selection",
-    {x:1.27,y:0.9,w:11.3,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
+function scoreCandidate(d){
+  const sc={pop:sPop(d.pop5), inc:sInc(d.inc), traf:sTraf(d.traf), comp:sComp(d.compTxt),
+            anchor:d.anchor, park:sPark(d.park), acc:d.acc, vis:d.vis};
+  const raw=Object.values(sc).reduce((a,b)=>a+b,0);
+  const weighted=Object.keys(WEIGHTS).reduce((a,k)=>a+sc[k]*WEIGHTS[k],0)/100*20;
+  return {sc, raw, weighted};
+}
+const candidatesRanked = Object.keys(CANDIDATES)
+  .map(n=>({n,...scoreCandidate(CANDIDATES[n]), ...CANDIDATES[n]}))
+  .sort((a,b)=> b.weighted-a.weighted || b.raw-a.raw);
 
-  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:1.32,w:PW-1.0,h:0.55,rectRadius:0.06,fill:{color:INK}});
+function candidateSlide(slNo, badge, o, idx){
+  const s=pptx.addSlide(); s.background={color:WHITE};
+  sunBadge(s,0.5,0.42,badge,0.6,SKY,WHITE);
+  s.addText(`New-Market Candidate ${idx} — ${o.n}`,{x:1.25,y:0.34,w:11,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:24});
+  s.addText("Step 6 · A market Sunburn doesn't yet serve, scored against the same 8 criteria as the existing portfolio",
+    {x:1.27,y:0.88,w:11.3,h:0.35,fontFace:BODY,color:GRAY,fontSize:12.5});
+
+  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:1.3,w:PW-1.0,h:0.55,rectRadius:0.06,fill:{color:INK}});
   s.addText([
-    {text:`Portfolio Rank #${o.rank}   `,options:{bold:true,color:SUN,fontSize:13}},
-    {text:`·   Scorecard ${o.weighted.toFixed(0)}/100 (Raw ${o.raw}/40)   `,options:{color:WHITE,fontSize:13}},
-    {text:`·   2025 Sales ${money(d.s25)}   ·   2026 YTD ${money(d.s26)}`,options:{color:"CFC9E0",fontSize:13}},
-  ],{x:0.5,y:1.32,w:PW-1.0,h:0.55,align:"center",valign:"middle",fontFace:BODY,margin:0});
+    {text:`Projected Scorecard ${o.weighted.toFixed(0)}/100 (Raw ${o.raw}/40)   `,options:{bold:true,color:SKY,fontSize:13}},
+    {text:`·   Would rank #${candidatesRanked.findIndex(c=>c.n===o.n)+1} of the 4 candidates evaluated`,options:{color:"CFC9E0",fontSize:13}},
+  ],{x:0.5,y:1.3,w:PW-1.0,h:0.55,align:"center",valign:"middle",fontFace:BODY,margin:0});
 
   const crit=[
-    {k:"traf",  t:"Traffic",     v:d.trafD,                         sc:o.sc.traf},
-    {k:"acc",   t:"Access",      v:`${d.acc} / 5 rating`,           sc:o.sc.acc},
-    {k:"vis",   t:"Visibility",  v:`${d.vis} / 5 rating`,           sc:o.sc.vis},
-    {k:"park",  t:"Parking",     v: d.park!=null? `${d.park.toFixed(2)} / 1,000 SF` : "Not yet captured", sc:o.sc.park},
-    {k:"anchor",t:"Anchors",     v:d.anchorTxt,                     sc:o.sc.anchor},
-    {k:"inc",   t:"Income",      v:`$${(d.inc/1000).toFixed(0)}k median HHI`, sc:o.sc.inc},
-    {k:"pop",   t:"Population",  v:`${popd(d.p)} (1/3/5-mi)`,       sc:o.sc.pop},
-    {k:"comp",  t:"Competition", v:d.compTxt,                       sc:o.sc.comp},
+    {k:"traf",  t:"Traffic",     v:o.trafD,                                   sc:o.sc.traf},
+    {k:"acc",   t:"Access",      v:`${o.acc} / 5 rating`,                     sc:o.sc.acc},
+    {k:"vis",   t:"Visibility",  v:`${o.vis} / 5 rating`,                     sc:o.sc.vis},
+    {k:"park",  t:"Parking",     v:`${o.park.toFixed(2)} / 1,000 SF (est.)`,  sc:o.sc.park},
+    {k:"anchor",t:"Anchors",     v:o.anchorTxt,                               sc:o.sc.anchor},
+    {k:"inc",   t:"Income",      v:`$${(o.inc/1000).toFixed(0)}k median HHI`, sc:o.sc.inc},
+    {k:"pop",   t:"Population",  v:o.popD,                                    sc:o.sc.pop},
+    {k:"comp",  t:"Competition", v:o.compTxt,                                 sc:o.sc.comp},
   ];
-  const cols=4, cardW=2.95, gapX=0.17, cardH=2.175, gapY=0.15, gridX=0.5, gridY=2.05;
+  const cols=4, cardW=2.95, gapX=0.17, cardH=2.175, gapY=0.15, gridX=0.5, gridY=2.03;
   crit.forEach((c,i)=>{
     const col=i%cols, row=Math.floor(i/cols);
     const x=gridX+col*(cardW+gapX), y=gridY+row*(cardH+gapY);
-    const tint = c.sc>=5? "FBE7C6" : c.sc>=4? CLOUD2 : CLOUD;
+    const tint = c.sc>=5? "DCEAF4" : c.sc>=4? CLOUD2 : CLOUD;
     s.addShape(pptx.ShapeType.roundRect,{x,y,w:cardW,h:cardH,rectRadius:0.07,fill:{color:tint}});
     s.addText(c.t.toUpperCase(),{x:x+0.14,y:y+0.1,w:cardW-0.28,h:0.28,fontFace:BODY,bold:true,color:GRAY,fontSize:9.5,charSpacing:1});
-    s.addText(`${c.sc}/5`,{x:x+0.14,y:y+0.36,w:cardW-0.28,h:0.42,fontFace:HEAD,bold:true,color:c.sc>=5?SUN:INK2,fontSize:22});
+    s.addText(`${c.sc}/5`,{x:x+0.14,y:y+0.36,w:cardW-0.28,h:0.42,fontFace:HEAD,bold:true,color:c.sc>=5?SKY:INK2,fontSize:22});
     s.addText(c.v,{x:x+0.14,y:y+0.8,w:cardW-0.28,h:0.42,fontFace:BODY,bold:true,color:INK,fontSize:9.5,valign:"top"});
-    s.addText(why[c.k],{x:x+0.14,y:y+1.22,w:cardW-0.28,h:cardH-1.3,fontFace:BODY,color:GRAY,fontSize:8,valign:"top",lineSpacingMultiple:1.02});
+    s.addText(o.why[c.k],{x:x+0.14,y:y+1.22,w:cardW-0.28,h:cardH-1.3,fontFace:BODY,color:GRAY,fontSize:8,valign:"top",lineSpacingMultiple:1.02});
   });
 
-  s.addText(why.headline,{x:0.5,y:gridY+2*cardH+gapY+0.08,w:PW-1.0,h:0.42,align:"center",fontFace:BODY,italic:true,bold:true,color:INK2,fontSize:11.5});
+  s.addText(o.headline,{x:0.5,y:gridY+2*cardH+gapY+0.06,w:PW-1.0,h:0.42,align:"center",fontFace:BODY,italic:true,bold:true,color:INK2,fontSize:11});
+  s.addText("Market-level estimates for planning purposes — pending on-the-ground site verification before submitting an LOI.",
+    {x:0.5,y:PH-0.55,w:12.3,h:0.3,fontFace:BODY,italic:true,fontSize:8.5,color:GRAY});
   footer(s,slNo);
 }
-spotlightSlide(9,"9",ranked[0]);
-spotlightSlide(10,"10",ranked[1]);
-spotlightSlide(11,"11",ranked[2]);
-
-/* ===================================== SLIDE 12 — WINNING PROFILE & NEXT STEPS */
-(() => {
-  const s=pptx.addSlide(); s.background={color:INK};
-  sunBadge(s,0.5,0.42,"12",0.6);
-  s.addText("The Winning Profile & Next Steps",{x:1.25,y:0.36,w:11,h:0.5,fontFace:HEAD,bold:true,color:WHITE,fontSize:27});
-  s.addText("Step 7 · The target-site profile the data points to, and how to deploy the scorecard",
-    {x:1.27,y:0.9,w:11.5,h:0.35,fontFace:BODY,color:"CFC9E0",fontSize:13});
-  // left card — the profile
-  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:1.55,w:6.05,h:4.75,rectRadius:0.08,fill:{color:"2E2A55"}});
-  s.addText("The Sunburn “A-site” profile",{x:0.8,y:1.72,w:5.5,h:0.4,fontFace:HEAD,bold:true,color:SUN,fontSize:16});
-  const prof=[
-    "Traffic: a main corridor or highway — 40k+ VPD ideal; 25k+ works with a strong anchor",
-    "Anchor: grocery, mall, big-box or major destination (Target, Publix, UCF-type draw)",
-    "Parking & access: 4+ spaces / 1,000 SF, easy in/out, bold signage",
-    "Trade area: mainstream income ~$60k–$90k; 100k+ within 5 miles is a plus, not a must",
-    "Competition: don’t avoid it — a proven corridor signals demand",
-  ];
-  s.addText(prof.map(t=>({text:t,options:{bullet:{code:"2022",indent:14},color:"EDEBF5",fontSize:12,paraSpaceAfter:11,breakLine:true}})),
-    {x:0.85,y:2.2,w:5.5,h:4.0,valign:"top"});
-  // right card — how to use
-  s.addShape(pptx.ShapeType.roundRect,{x:6.8,y:1.55,w:6.05,h:4.75,rectRadius:0.08,fill:{color:"2E2A55"}});
-  s.addText("Putting the scorecard to work",{x:7.1,y:1.72,w:5.5,h:0.4,fontFace:HEAD,bold:true,color:SKY,fontSize:16});
-  const steps=[
-    ["Step 5 — Source candidates","Pull available retail sites in target markets from CoStar, Crexi, LoopNet and broker networks."],
-    ["Step 6 — Score each site","Gather the same 8 data points, score 1–5, and apply the weights for an overall / 100."],
-    ["Step 7 — Recommend 2–4","Advance the highest scorers that best mirror the top analogs below."],
-  ];
-  let y=2.25;
-  steps.forEach(st=>{
-    s.addText(st[0],{x:7.15,y,w:5.4,h:0.35,fontFace:HEAD,bold:true,color:WHITE,fontSize:13.5});
-    s.addText(st[1],{x:7.15,y:y+0.36,w:5.4,h:0.7,fontFace:BODY,color:"CFC9E0",fontSize:11.5,valign:"top",lineSpacingMultiple:1.02});
-    y+=1.18;
-  });
-  // bottom strip — top analogs
-  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:6.42,w:PW-1.0,h:0.6,rectRadius:0.06,fill:{color:SUN}});
-  s.addText([{text:"Model’s top analogs to target:  ",options:{bold:true,color:INK,fontSize:12.5}},
-    {text:`${ranked[0].n} (${ranked[0].weighted.toFixed(0)})  ·  ${ranked[1].n} (${ranked[1].weighted.toFixed(0)})  ·  ${ranked[2].n} (${ranked[2].weighted.toFixed(0)})`,options:{color:INK,fontSize:12.5}}],
-    {x:0.5,y:6.42,w:PW-1.0,h:0.6,align:"center",valign:"middle",fontFace:BODY});
-  footer(s,12);
-})();
+candidatesRanked.forEach((o,i)=>candidateSlide(9+i, String(9+i), o, i+1));
 
 /* ---------------------------------------------------------------- SAVE */
 pptx.writeFile({fileName:"Sunburn_Site_Selection_Analysis.pptx"}).then(f=>console.log("WROTE",f));
