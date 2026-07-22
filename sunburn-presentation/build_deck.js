@@ -70,7 +70,7 @@ pptx.theme={headFontFace:HEAD, bodyFontFace:BODY};
 const PW=13.333, PH=7.5;
 function sunBadge(s,x,y,txt,d=0.55,fill=SUN,color=INK){
   s.addShape(pptx.ShapeType.ellipse,{x,y,w:d,h:d,fill:{color:fill}});
-  s.addText(txt,{x,y,w:d,h:d,align:"center",valign:"middle",fontFace:HEAD,bold:true,color,fontSize:18});
+  s.addText(txt,{x,y,w:d,h:d,align:"center",valign:"middle",fontFace:HEAD,bold:true,color,fontSize:String(txt).length>1?14:18});
 }
 function footer(s,n){
   s.addText("Sunburn Site Selection Project",{x:0.5,y:PH-0.38,w:6,h:0.3,fontFace:BODY,fontSize:9,color:GRAY});
@@ -295,10 +295,92 @@ scorecardSlide(8,"8","The Sunburn Scorecard  ·  Ranks 9–15",
   ranked.slice(8,15),
   "The model rewards suburban site mechanics (traffic, parking, access). Proven urban/destination sellers — Jax 5 Points and Pensacola — score below their sales, so the scorecard guides rather than replaces judgment. Only Panama City Beach & Sarasota parking are estimated (neutral 3); all else uses actual workbook figures.");
 
-/* ===================================== SLIDE 9 — WINNING PROFILE & NEXT STEPS */
+/* ============================================= SLIDES 9–11 — SUCCESS SPOTLIGHTS */
+// Qualitative "why" copy for the model's top-3 analogs, one line per criterion.
+// Numbers/labels are pulled live from S/sc; only the rationale text is curated.
+const SPOTLIGHT_WHY = {
+  "Fort Lauderdale": {
+    headline: "A clean sweep — 5 of 5 on every criterion. The benchmark every future site is measured against.",
+    traf:"One of the busiest corridors in the portfolio — as high as it gets on the scale.",
+    acc:"Easy, high-speed in/out from a major arterial with no bottlenecks.",
+    vis:"Prime frontage on a primary corridor — impossible to miss.",
+    park:"10 spaces / 1,000 SF — effectively zero parking friction.",
+    anchor:"Target + a movie theatre pull steady cross-shop traffic all week.",
+    inc:"$79k median HHI sits right in the $55k–$90k sweet spot.",
+    pop:"313.4k people within 5 miles — the largest trade area in the portfolio.",
+    comp:"No named competitor in the trade area — uncontested demand.",
+  },
+  "Mandarin San Jose": {
+    headline: "A grocery-anchored center with near-flawless site mechanics — proof that a smaller, denser trade area can still be a top performer.",
+    traf:"~52,000 VPD — tied for the highest traffic count in the portfolio.",
+    acc:"Good ingress/egress, though slightly busier than Ft. Lauderdale's arterial.",
+    vis:"Excellent street-facing visibility inside a well-trafficked center.",
+    park:"10 spaces / 1,000 SF — as generous as it gets.",
+    anchor:"Grocery + mall anchor a true weekly-visit destination.",
+    inc:"$91k median HHI — just above the ideal band, still solidly mainstream.",
+    pop:"118.2k within 5 miles — smaller than the top site, but dense enough to convert.",
+    comp:"No named competitor — a clean run at the trade area.",
+  },
+  "Orlando": {
+    headline: "The highest raw traffic count in the portfolio, powered by a captive student population — and proof that nearby competition doesn't cap upside.",
+    traf:"~70,000 VPD — the single highest traffic count of all 15 stores.",
+    acc:"Congested student-area access keeps this from a top access score.",
+    vis:"Strong visibility along a high-traffic UCF-adjacent corridor.",
+    park:"4.71 spaces / 1,000 SF — workable, not abundant.",
+    anchor:"UCF + student housing is a built-in, self-renewing demand engine.",
+    inc:"$74k median HHI — comfortably inside the mainstream band.",
+    pop:"260k within 5 miles — the second-largest trade area in the portfolio.",
+    comp:"Shares the corridor with a named competitor (Lifted Smoke) — proof a proven corridor beats an empty one.",
+  },
+};
+function spotlightSlide(slNo, badge, o){
+  const s=pptx.addSlide(); s.background={color:WHITE};
+  const d=S[o.n], why=SPOTLIGHT_WHY[o.n];
+  sunBadge(s,0.5,0.42,badge,0.6,SUN,INK);
+  s.addText(`Success Spotlight — ${o.n}`,{x:1.25,y:0.36,w:10.5,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:27});
+  s.addText("Step 6 · Why this location works, criterion by criterion — a model for future site selection",
+    {x:1.27,y:0.9,w:11.3,h:0.35,fontFace:BODY,color:GRAY,fontSize:13});
+
+  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:1.32,w:PW-1.0,h:0.55,rectRadius:0.06,fill:{color:INK}});
+  s.addText([
+    {text:`Portfolio Rank #${o.rank}   `,options:{bold:true,color:SUN,fontSize:13}},
+    {text:`·   Scorecard ${o.weighted.toFixed(0)}/100 (Raw ${o.raw}/40)   `,options:{color:WHITE,fontSize:13}},
+    {text:`·   2025 Sales ${money(d.s25)}   ·   2026 YTD ${money(d.s26)}`,options:{color:"CFC9E0",fontSize:13}},
+  ],{x:0.5,y:1.32,w:PW-1.0,h:0.55,align:"center",valign:"middle",fontFace:BODY,margin:0});
+
+  const crit=[
+    {k:"traf",  t:"Traffic",     v:d.trafD,                         sc:o.sc.traf},
+    {k:"acc",   t:"Access",      v:`${d.acc} / 5 rating`,           sc:o.sc.acc},
+    {k:"vis",   t:"Visibility",  v:`${d.vis} / 5 rating`,           sc:o.sc.vis},
+    {k:"park",  t:"Parking",     v: d.park!=null? `${d.park.toFixed(2)} / 1,000 SF` : "Not yet captured", sc:o.sc.park},
+    {k:"anchor",t:"Anchors",     v:d.anchorTxt,                     sc:o.sc.anchor},
+    {k:"inc",   t:"Income",      v:`$${(d.inc/1000).toFixed(0)}k median HHI`, sc:o.sc.inc},
+    {k:"pop",   t:"Population",  v:`${popd(d.p)} (1/3/5-mi)`,       sc:o.sc.pop},
+    {k:"comp",  t:"Competition", v:d.compTxt,                       sc:o.sc.comp},
+  ];
+  const cols=4, cardW=2.95, gapX=0.17, cardH=2.175, gapY=0.15, gridX=0.5, gridY=2.05;
+  crit.forEach((c,i)=>{
+    const col=i%cols, row=Math.floor(i/cols);
+    const x=gridX+col*(cardW+gapX), y=gridY+row*(cardH+gapY);
+    const tint = c.sc>=5? "FBE7C6" : c.sc>=4? CLOUD2 : CLOUD;
+    s.addShape(pptx.ShapeType.roundRect,{x,y,w:cardW,h:cardH,rectRadius:0.07,fill:{color:tint}});
+    s.addText(c.t.toUpperCase(),{x:x+0.14,y:y+0.1,w:cardW-0.28,h:0.28,fontFace:BODY,bold:true,color:GRAY,fontSize:9.5,charSpacing:1});
+    s.addText(`${c.sc}/5`,{x:x+0.14,y:y+0.36,w:cardW-0.28,h:0.42,fontFace:HEAD,bold:true,color:c.sc>=5?SUN:INK2,fontSize:22});
+    s.addText(c.v,{x:x+0.14,y:y+0.8,w:cardW-0.28,h:0.42,fontFace:BODY,bold:true,color:INK,fontSize:9.5,valign:"top"});
+    s.addText(why[c.k],{x:x+0.14,y:y+1.22,w:cardW-0.28,h:cardH-1.3,fontFace:BODY,color:GRAY,fontSize:8,valign:"top",lineSpacingMultiple:1.02});
+  });
+
+  s.addText(why.headline,{x:0.5,y:gridY+2*cardH+gapY+0.08,w:PW-1.0,h:0.42,align:"center",fontFace:BODY,italic:true,bold:true,color:INK2,fontSize:11.5});
+  footer(s,slNo);
+}
+spotlightSlide(9,"9",ranked[0]);
+spotlightSlide(10,"10",ranked[1]);
+spotlightSlide(11,"11",ranked[2]);
+
+/* ===================================== SLIDE 12 — WINNING PROFILE & NEXT STEPS */
 (() => {
   const s=pptx.addSlide(); s.background={color:INK};
-  sunBadge(s,0.5,0.42,"9",0.6);
+  sunBadge(s,0.5,0.42,"12",0.6);
   s.addText("The Winning Profile & Next Steps",{x:1.25,y:0.36,w:11,h:0.5,fontFace:HEAD,bold:true,color:WHITE,fontSize:27});
   s.addText("Step 7 · The target-site profile the data points to, and how to deploy the scorecard",
     {x:1.27,y:0.9,w:11.5,h:0.35,fontFace:BODY,color:"CFC9E0",fontSize:13});
@@ -333,7 +415,7 @@ scorecardSlide(8,"8","The Sunburn Scorecard  ·  Ranks 9–15",
   s.addText([{text:"Model’s top analogs to target:  ",options:{bold:true,color:INK,fontSize:12.5}},
     {text:`${ranked[0].n} (${ranked[0].weighted.toFixed(0)})  ·  ${ranked[1].n} (${ranked[1].weighted.toFixed(0)})  ·  ${ranked[2].n} (${ranked[2].weighted.toFixed(0)})`,options:{color:INK,fontSize:12.5}}],
     {x:0.5,y:6.42,w:PW-1.0,h:0.6,align:"center",valign:"middle",fontFace:BODY});
-  footer(s,9);
+  footer(s,12);
 })();
 
 /* ---------------------------------------------------------------- SAVE */
