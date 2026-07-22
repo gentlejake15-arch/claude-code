@@ -419,5 +419,75 @@ function candidateSlide(slNo, badge, o, idx){
 }
 candidatesRanked.forEach((o,i)=>candidateSlide(9+i, String(9+i), o, i+1));
 
+/* ===================================== SLIDE 13 — CONFIRMED LISTING (2620 NW 13th St) */
+// Real, currently-available CoStar listing (Lowes Plaza, Gainesville FL), scored
+// with the same rubric as the illustrative candidates and existing portfolio.
+(() => {
+  const site = {
+    n:"2620 NW 13th St — Lowes Plaza",
+    sub:"Gainesville, FL 32609 · Northwest Gainesville Submarket",
+    inc:48594, traf:28000, trafD:"~28k–33k VPD (NW 13th St, 2025 counts)",
+    pop5:161808, popD:"10.7k / 78.2k / 161.8k (1/3/5-mi)",
+    park:741/175.619, vis:5, acc:5, anchor:5,
+    anchorTxt:"Lowe's (anchors the 175,619 SF center, 97.1% leased)",
+    compTxt:"Space Age Tobacco (in-line co-tenant)",
+    listing:"2,550 SF end cap · Vacant · $23.00/SF NNN · Excellent condition, partial build-out",
+    headline:"A real, currently available end cap at a Lowe's-anchored center — strong access, visibility and anchor tenancy, offset by below-target income and an in-center tobacco competitor.",
+    why:{
+      traf:"27,988–33,278 VPD measured along NW 13th St within 0.2 mi (2025) — solid volume, though short of the portfolio's 40k+ benchmark.",
+      acc:"Signalized intersection frontage plus an 80/100 “Very Car Friendly” rating make ingress/egress straightforward.",
+      vis:"End-cap unit with 949 ft of NW 13th St frontage and a dedicated pylon sign — hard to miss.",
+      park:"741 shared surface spaces across the 175,619 SF center — about 4.2 spaces / 1,000 SF, clearing the portfolio's 4+ benchmark.",
+      anchor:"Lowe's anchors a 97.1%-leased community center — a strong, recognizable draw with steady cross-shop traffic.",
+      inc:"$48.6k median HH income within 3 miles — below the $55k–$90k ideal band, consistent with Gainesville's student-heavy demographics.",
+      pop:"161.8k within 5 miles (10.7k within 1 mile) — solid density for a community-center site.",
+      comp:"Space Age Tobacco already leases space in the same center through 2030 — a proven smoke-shop draw, but direct in-center competition.",
+    },
+  };
+  const sc={pop:sPop(site.pop5), inc:sInc(site.inc), traf:sTraf(site.traf), comp:sComp(site.compTxt),
+            anchor:site.anchor, park:sPark(site.park), acc:site.acc, vis:site.vis};
+  const raw=Object.values(sc).reduce((a,b)=>a+b,0);
+  const weighted=Object.keys(WEIGHTS).reduce((a,k)=>a+sc[k]*WEIGHTS[k],0)/100*20;
+
+  const s=pptx.addSlide(); s.background={color:WHITE};
+  sunBadge(s,0.5,0.42,"13",0.6,GRN,WHITE);
+  s.addText(`Confirmed Listing — ${site.n}`,{x:1.25,y:0.34,w:11,h:0.5,fontFace:HEAD,bold:true,color:INK,fontSize:23});
+  s.addText(`Step 6 · ${site.sub} — an actual CoStar listing scored against the 8 scorecard criteria`,
+    {x:1.27,y:0.86,w:11.3,h:0.35,fontFace:BODY,color:GRAY,fontSize:12});
+
+  s.addShape(pptx.ShapeType.roundRect,{x:0.5,y:1.26,w:PW-1.0,h:0.55,rectRadius:0.06,fill:{color:INK}});
+  s.addText([
+    {text:`Projected Scorecard ${weighted.toFixed(0)}/100 (Raw ${raw}/40)   `,options:{bold:true,color:GRN,fontSize:13}},
+    {text:`·   ${site.listing}`,options:{color:"CFC9E0",fontSize:12}},
+  ],{x:0.5,y:1.26,w:PW-1.0,h:0.55,align:"center",valign:"middle",fontFace:BODY,margin:0});
+
+  const crit=[
+    {k:"traf",  t:"Traffic",     v:site.trafD,                                   sc:sc.traf},
+    {k:"acc",   t:"Access",      v:`${site.acc} / 5 rating`,                     sc:sc.acc},
+    {k:"vis",   t:"Visibility",  v:`${site.vis} / 5 rating`,                     sc:sc.vis},
+    {k:"park",  t:"Parking",     v:`${site.park.toFixed(2)} / 1,000 SF`,         sc:sc.park},
+    {k:"anchor",t:"Anchors",     v:site.anchorTxt,                               sc:sc.anchor},
+    {k:"inc",   t:"Income",      v:`$${(site.inc/1000).toFixed(1)}k median HHI (3-mi)`, sc:sc.inc},
+    {k:"pop",   t:"Population",  v:site.popD,                                    sc:sc.pop},
+    {k:"comp",  t:"Competition", v:site.compTxt,                                 sc:sc.comp},
+  ];
+  const cols=4, cardW=2.95, gapX=0.17, cardH=2.175, gapY=0.15, gridX=0.5, gridY=1.99;
+  crit.forEach((c,i)=>{
+    const col=i%cols, row=Math.floor(i/cols);
+    const x=gridX+col*(cardW+gapX), y=gridY+row*(cardH+gapY);
+    const tint = c.sc>=5? "D9F0E3" : c.sc>=4? CLOUD2 : CLOUD;
+    s.addShape(pptx.ShapeType.roundRect,{x,y,w:cardW,h:cardH,rectRadius:0.07,fill:{color:tint}});
+    s.addText(c.t.toUpperCase(),{x:x+0.14,y:y+0.1,w:cardW-0.28,h:0.28,fontFace:BODY,bold:true,color:GRAY,fontSize:9.5,charSpacing:1});
+    s.addText(`${c.sc}/5`,{x:x+0.14,y:y+0.36,w:cardW-0.28,h:0.42,fontFace:HEAD,bold:true,color:c.sc>=5?GRN:INK2,fontSize:22});
+    s.addText(c.v,{x:x+0.14,y:y+0.8,w:cardW-0.28,h:0.42,fontFace:BODY,bold:true,color:INK,fontSize:9.5,valign:"top"});
+    s.addText(site.why[c.k],{x:x+0.14,y:y+1.22,w:cardW-0.28,h:cardH-1.3,fontFace:BODY,color:GRAY,fontSize:8,valign:"top",lineSpacingMultiple:1.02});
+  });
+
+  s.addText(site.headline,{x:0.5,y:gridY+2*cardH+gapY+0.06,w:PW-1.0,h:0.42,align:"center",fontFace:BODY,italic:true,bold:true,color:INK2,fontSize:11});
+  s.addText("Source: CoStar listing, property ID 10782547, last updated July 10, 2026. Income/population per CoStar demographics; traffic per TrafficMetrix.",
+    {x:0.5,y:PH-0.55,w:12.3,h:0.3,fontFace:BODY,italic:true,fontSize:8.5,color:GRAY});
+  footer(s,13);
+})();
+
 /* ---------------------------------------------------------------- SAVE */
 pptx.writeFile({fileName:"Sunburn_Site_Selection_Analysis.pptx"}).then(f=>console.log("WROTE",f));
